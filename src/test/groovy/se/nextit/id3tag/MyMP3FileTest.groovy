@@ -1,22 +1,17 @@
 package se.nextit.id3tag
 
 import org.jaudiotagger.audio.mp3.MP3File
-import org.jaudiotagger.tag.FieldKey
 import org.jaudiotagger.tag.id3.ID3v11Tag
 import org.jaudiotagger.tag.id3.ID3v24Tag
 import spock.lang.Specification
-
-import java.util.logging.Level
-import java.util.logging.Logger
 
 import static java.net.URLDecoder.decode
 import static java.util.logging.Level.OFF
 import static java.util.logging.Logger.getLogger
 import static org.jaudiotagger.tag.FieldKey.ARTIST
-import static org.jaudiotagger.tag.FieldKey.FBPM
 import static org.jaudiotagger.tag.FieldKey.TITLE
 
-class MyMP3FileSaveTest extends Specification {
+class MyMP3FileTest extends Specification {
     { getLogger("org.jaudiotagger").setLevel(OFF); }
 
     private static final String CORRECT_FILENAME = "/Ronnie Davis - Hooligan.mp3"

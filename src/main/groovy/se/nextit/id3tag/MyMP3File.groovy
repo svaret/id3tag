@@ -22,6 +22,7 @@ class MyMP3File {
         mp3File = new MP3File(file)
         setId3v1TagFields(artistAndTitle.get(0), artistAndTitle.get(1))
         setId3v2TagFields(artistAndTitle.get(0), artistAndTitle.get(1))
+        mp3File.commit()
     }
 
     private def setId3v1TagFields(artist, title) {
@@ -33,8 +34,6 @@ class MyMP3File {
 
         if (title != mp3File.ID3v1Tag.getFirst(TITLE))
             mp3File.ID3v1Tag.setField(TITLE, title)
-
-        mp3File.commit()
     }
 
     private def setId3v2TagFields(artist, title) {
@@ -46,8 +45,6 @@ class MyMP3File {
 
         if (title != mp3File.ID3v2Tag.getFirst(TITLE))
             mp3File.ID3v2Tag.setField(TITLE, title)
-
-        mp3File.commit()
     }
 
     private void addId3v1Tag(artist, title) {
