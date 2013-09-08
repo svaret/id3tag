@@ -1,0 +1,12 @@
+.DS_Store
+target/
+.metadata/
+target-eclipse/
+bin/
+out/
+*.iml
+.settings/
+.project
+.idea/
+.classpath
+Servers/

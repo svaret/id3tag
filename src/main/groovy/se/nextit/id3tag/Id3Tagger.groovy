@@ -1,6 +1,5 @@
 package se.nextit.id3tag
 
-import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException
 import org.jaudiotagger.audio.mp3.MP3File
 import org.jaudiotagger.tag.id3.ID3v11Tag
 import org.jaudiotagger.tag.id3.ID3v24Tag
