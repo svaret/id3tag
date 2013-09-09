@@ -16,9 +16,9 @@ class MyMP3FileTest extends Specification {
 
     private static final String CORRECT_FILENAME = "/Ronnie Davis - Hooligan.mp3"
 
-    def "Creating MyMP3File with no separators should throw an exception"() {
+    def "Missing separator should throw an exception upon creation"() {
         given:
-        def file = new File("/RonnieDavisIRoyHolligan.mp3")
+        def file = new File("/RonnieDavisIRoyHooligan.mp3")
 
         when:
         new MyMP3File(file)
@@ -27,7 +27,7 @@ class MyMP3FileTest extends Specification {
         thrown SeparatorMissingException
     }
 
-    def "Creating MyMP3File with too many separators should throw an exception"() {
+    def "Too many separators should throw an exception upon creation"() {
         given:
         def file = new File("/Ronnie - Davis - IRoyHooligan.mp3")
 
@@ -38,7 +38,7 @@ class MyMP3FileTest extends Specification {
         thrown TooManySeparatorsException
     }
 
-    def "MP3 file with existing incorrect id3v1 tag should get correct artist and title tagged"() {
+    def "Incorrect id3v1 tag should get correct artist and title tagged"() {
         given:
         def mp3File = new MP3File(openFile(CORRECT_FILENAME))
         mp3File.ID3v1Tag = addId3v1Tag("Incorrect artist", "Incorrect title")
@@ -52,7 +52,7 @@ class MyMP3FileTest extends Specification {
         myMP3File.titleV1Tag == "Hooligan"
     }
 
-    def "MP3 file with no id3v1 tag should get correct artist and title tagged"() {
+    def "Missing id3v1 tag should get correct artist and title tagged"() {
         given:
         def mp3File = new MP3File(openFile(CORRECT_FILENAME))
         mp3File.delete(mp3File.ID3v1Tag)
@@ -66,7 +66,7 @@ class MyMP3FileTest extends Specification {
         myMP3File.titleV1Tag == "Hooligan"
     }
 
-    def "MP3 file with existing incorrect id3v2 tag should get correct artist and title tagged"() {
+    def "Incorrect id3v2 tag should get correct artist and title tagged"() {
         given:
         def mp3File = new MP3File(openFile(CORRECT_FILENAME))
         mp3File.ID3v2Tag = addId3v2Tag("Incorrect artist", "Incorrect title")
@@ -80,7 +80,7 @@ class MyMP3FileTest extends Specification {
         myMP3File.titleV2Tag == "Hooligan"
     }
 
-    def "MP3 file with no id3v2 tag should get correct artist and title tagged"() {
+    def "Missing id3v2 tag should get correct artist and title tagged"() {
         given:
         def mp3File = new MP3File(openFile(CORRECT_FILENAME))
         mp3File.delete(mp3File.ID3v2Tag)
@@ -99,14 +99,14 @@ class MyMP3FileTest extends Specification {
         new File(decode(url.getFile(), "utf-8"))
     }
 
-    private ID3v11Tag addId3v1Tag(def artist, def title) {
+    private static ID3v11Tag addId3v1Tag(def artist, def title) {
         def ID3v1Tag = new ID3v11Tag()
         ID3v1Tag.artist = artist
         ID3v1Tag.title = title
         ID3v1Tag
     }
 
-    private ID3v24Tag addId3v2Tag(def artist, def title) {
+    private static ID3v24Tag addId3v2Tag(def artist, def title) {
         def ID3v2Tag = new ID3v24Tag()
         ID3v2Tag.setField(ARTIST, artist)
         ID3v2Tag.setField(TITLE, title)

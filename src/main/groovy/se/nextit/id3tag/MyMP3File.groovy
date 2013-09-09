@@ -13,7 +13,7 @@ class MyMP3File {
 
     MyMP3File(File file) {
         def filenameWithoutExtension = file.name.subSequence(0, file.name.lastIndexOf('.'))
-        def artistAndTitle = filenameWithoutExtension.split(SEPARATOR) as List
+        def artistAndTitle = filenameWithoutExtension.split(SEPARATOR as Closure) as List
         if (artistAndTitle.size() < 2)
             throw new SeparatorMissingException("Separator not found in filename " + file.name)
         if (artistAndTitle.size() > 2)
@@ -27,7 +27,7 @@ class MyMP3File {
 
     private def setId3v1TagFields(artist, title) {
         if (!mp3File.hasID3v1Tag())
-            addId3v1Tag(artist, title)
+            mp3File.ID3v1Tag = new ID3v11Tag()
 
         if (artist != mp3File.ID3v1Tag.getFirst(ARTIST))
             mp3File.ID3v1Tag.setField(ARTIST, artist)
@@ -38,7 +38,7 @@ class MyMP3File {
 
     private def setId3v2TagFields(artist, title) {
         if (!mp3File.hasID3v2Tag())
-            addId3v2Tag(artist, title)
+            mp3File.ID3v2Tag = new ID3v24Tag()
 
         if (artist != mp3File.ID3v2Tag.getFirst(ARTIST))
             mp3File.ID3v2Tag.setField(ARTIST, artist)
@@ -47,19 +47,6 @@ class MyMP3File {
             mp3File.ID3v2Tag.setField(TITLE, title)
     }
 
-    private void addId3v1Tag(artist, title) {
-        def id3v1Tag = new ID3v11Tag()
-        id3v1Tag.artist = artist
-        id3v1Tag.title = title
-        mp3File.ID3v1Tag = id3v1Tag
-    }
-
-    private void addId3v2Tag(artist, title) {
-        def id3v2Tag = new ID3v24Tag()
-        id3v2Tag.setField(ARTIST, artist)
-        id3v2Tag.setField(TITLE, title)
-        mp3File.ID3v2Tag = id3v2Tag
-    }
 
     def getArtistV1Tag() {
         mp3File.ID3v1Tag.getFirst(ARTIST)
