@@ -43,9 +43,10 @@ class MyMP3FileTest extends Specification {
         def mp3File = new MP3File(openFile(CORRECT_FILENAME))
         mp3File.ID3v1Tag = addId3v1Tag("Incorrect artist", "Incorrect title")
         mp3File.commit()
+        def myMP3File = new MyMP3File(openFile(CORRECT_FILENAME))
 
         when:
-        def myMP3File = new MyMP3File(openFile(CORRECT_FILENAME))
+        myMP3File.setId3v1TagFields()
 
         then:
         myMP3File.artistV1Tag == "Ronnie Davis"
@@ -57,9 +58,10 @@ class MyMP3FileTest extends Specification {
         def mp3File = new MP3File(openFile(CORRECT_FILENAME))
         mp3File.delete(mp3File.ID3v1Tag)
         mp3File.commit()
+        def myMP3File = new MyMP3File(openFile(CORRECT_FILENAME))
 
         when:
-        def myMP3File = new MyMP3File(openFile(CORRECT_FILENAME))
+        myMP3File.setId3v1TagFields()
 
         then:
         myMP3File.artistV1Tag == "Ronnie Davis"
@@ -71,9 +73,10 @@ class MyMP3FileTest extends Specification {
         def mp3File = new MP3File(openFile(CORRECT_FILENAME))
         mp3File.ID3v2Tag = addId3v2Tag("Incorrect artist", "Incorrect title")
         mp3File.commit()
+        def myMP3File = new MyMP3File(openFile(CORRECT_FILENAME))
 
         when:
-        def myMP3File = new MyMP3File(openFile(CORRECT_FILENAME))
+        myMP3File.setId3v2TagFields()
 
         then:
         myMP3File.artistV2Tag == "Ronnie Davis"
@@ -85,9 +88,10 @@ class MyMP3FileTest extends Specification {
         def mp3File = new MP3File(openFile(CORRECT_FILENAME))
         mp3File.delete(mp3File.ID3v2Tag)
         mp3File.commit()
+        def myMP3File = new MyMP3File(openFile(CORRECT_FILENAME))
 
         when:
-        def myMP3File = new MyMP3File(openFile(CORRECT_FILENAME))
+        myMP3File.setId3v2TagFields()
 
         then:
         myMP3File.artistV2Tag == "Ronnie Davis"

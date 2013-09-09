@@ -13,6 +13,7 @@ def numberOfFiles = 0
 def skippedFiles = []
 
 dir.traverse(type: FILES, nameFilter: ~/.*\.mp3$/) {
+
     def file = it
     def filenameWithoutExtension = file.name.lastIndexOf('.').with { it != -1 ? file.name[0..<it] : file.name }
     def artistAndTitle = filenameWithoutExtension.split(" - ") as List
