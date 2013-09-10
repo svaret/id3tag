@@ -6,27 +6,50 @@ import static java.util.logging.Logger.getLogger
 
 getLogger("org.jaudiotagger").setLevel(OFF)
 
-def dir = new File("/Users/pastorn/Dropbox/Bergstrom/music/reggaeAndMisc/reggaeNet/N/Nicodemus")
+def dir = new File("/Users/pastorn/Dropbox/Bergstrom/music/reggaeAndMisc/miscNet/M/Monica Zetterlund")
+def FILENAME = "fileNamesFile.txt"
 def numberOfFiles = 0
 def skippedFiles = []
 
+def filenamesFile = new File(FILENAME)
+Set processedFilenames = []
+if (filenamesFile.exists())
+    processedFilenames = filenamesFile.readLines()
+
 dir.traverse(type: FILES, nameFilter: ~/.*\.mp3$/) {
-    def myMP3File = new MyMP3File(it)
-    myMP3File.setId3v1TagFields()
-    myMP3File.setId3v2TagFields()
-}
+    println "Found file '" + it.name + "'"
+    if (processedFilenames.contains(it.name))
+        return
 
-skippedFiles.each {
-    println it
-}
-
-boolean filenameInvalid(List<String> artistAndTitle, List<String> skippedFiles) {
-    if (artistAndTitle.size() < 2) {
-        skippedFiles.add artistAndTitle + ". Separator not found in filename."
-        return false
+    println "Processing '" + it.name + "'"
+    try {
+        def myMP3File = new MyMP3File(it)
+        myMP3File.setId3v1TagFields()
+        myMP3File.setId3v2TagFields()
+    } catch (FilenameInvalidException e) {
+        skippedFiles += "Filename '" + it.name + "' is invalid."
+        return
+    } catch (FileNotFoundException e) {
+        skippedFiles += "Filename '" + it.name + "' not found."
+        return
     }
-    if (artistAndTitle.size() > 2) {
-        skippedFiles.add artistAndTitle + ". Too many separators in filename."
-        return false
+
+    numberOfFiles++
+    processedFilenames.add(it.name)
+}
+
+File processedFilenamesFile = new File(FILENAME)
+processedFilenamesFile.delete()
+processedFilenamesFile.withWriter { out ->
+    processedFilenames.each { out.println it }
+}
+
+println numberOfFiles + " files processed"
+
+if (skippedFiles.size() > 0) {
+    println "Skipped files:"
+    skippedFiles.each {
+        println it
+
     }
 }

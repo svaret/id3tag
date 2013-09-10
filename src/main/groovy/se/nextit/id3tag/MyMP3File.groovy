@@ -9,7 +9,7 @@ import static org.jaudiotagger.tag.FieldKey.TITLE
 
 class MyMP3File {
     private static final String SEPARATOR = " - "
-    private MP3File mp3File
+    private MP3File mp3File = new MP3File()
     private def artist
     private def title
 
