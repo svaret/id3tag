@@ -6,7 +6,7 @@ import static java.util.logging.Logger.getLogger
 
 getLogger("org.jaudiotagger").setLevel(OFF)
 
-def dir = new File("/Users/pastorn/Dropbox/Bergstrom/music/reggaeAndMisc/miscNet/M/Monica Zetterlund")
+def dir = new File("/Users/pastorn/Dropbox/Bergstrom/music/reggaeAndMisc/reggaeNet]")
 def FILENAME = "fileNamesFile.txt"
 def numberOfFiles = 0
 def skippedFiles = []
@@ -31,6 +31,9 @@ dir.traverse(type: FILES, nameFilter: ~/.*\.mp3$/) {
         return
     } catch (FileNotFoundException e) {
         skippedFiles += "Filename '" + it.name + "' not found."
+        return
+    } catch(Exception e) {
+        skippedFiles += "Filename '" + it.name + "'. " + e.getMessage()
         return
     }
 

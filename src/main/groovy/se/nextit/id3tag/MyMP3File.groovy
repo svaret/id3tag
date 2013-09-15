@@ -1,11 +1,13 @@
 package se.nextit.id3tag
 
+import org.apache.commons.io.filefilter.WildcardFileFilter
 import org.jaudiotagger.audio.mp3.MP3File
 import org.jaudiotagger.tag.id3.ID3v11Tag
 import org.jaudiotagger.tag.id3.ID3v24Tag
 
 import static org.jaudiotagger.tag.FieldKey.ARTIST
 import static org.jaudiotagger.tag.FieldKey.TITLE
+import static org.jaudiotagger.tag.datatype.Artwork.createArtworkFromFile
 
 class MyMP3File {
     private static final String SEPARATOR = " - "
@@ -49,9 +51,20 @@ class MyMP3File {
         if (title != mp3File.ID3v2Tag.getFirst(TITLE))
             mp3File.ID3v2Tag.setField(TITLE, title)
 
+        setArtwork()
+
         mp3File.commit()
     }
 
+    private setArtwork() {
+        FilenameFilter filenameFilter = new WildcardFileFilter(mp3File.file.parentFile.name + ".*")
+        def filenameList = mp3File.file.parentFile.list(filenameFilter)
+        if (filenameList.length == 0)
+            return
+        def artworkFilename = filenameList[0]
+        File artworkFile = new File(mp3File.file.parentFile, artworkFilename)
+        mp3File.ID3v2Tag.addField(createArtworkFromFile(artworkFile))
+    }
 
     def getArtistV1Tag() {
         mp3File.ID3v1Tag.getFirst(ARTIST)
@@ -66,6 +79,10 @@ class MyMP3File {
     }
 
     def getTitleV2Tag() {
-        mp3File.ID3v1Tag.getFirst(TITLE)
+        mp3File.ID3v2Tag.getFirst(TITLE)
+    }
+
+    def getArtwork() {
+        mp3File.ID3v2Tag.firstArtwork
     }
 }
