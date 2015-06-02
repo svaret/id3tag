@@ -6,7 +6,7 @@ import static java.util.logging.Logger.getLogger
 
 getLogger("org.jaudiotagger").setLevel(OFF)
 
-def dir = new File("/Users/pastorn/Dropbox/Bergstrom/music/reggaeAndMisc/reggaeNet]")
+def dir = new File("/Users/pastorn/Dropbox/Bergstrom/music/reggaeAndMisc/")
 def FILENAME = "fileNamesFile.txt"
 def numberOfFiles = 0
 def skippedFiles = []
